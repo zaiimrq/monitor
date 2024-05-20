@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('supporters', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('timses_id')->constrained('timses');
+            $table->foreignId('timses_id')->constrained('timses')->cascadeOnDelete();
             $table->unsignedBigInteger('nik');
             $table->string('name');
             $table->string('gender');

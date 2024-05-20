@@ -40,7 +40,7 @@ class IssueResource extends Resource
                     FileUpload::make('images')
                         ->image()
                         ->multiple()
-                        ->directory('report-images')
+                        ->directory('issue-images')
                         ->imageEditor(),
                 ])->hiddenOn('view'),
 
@@ -74,9 +74,7 @@ class IssueResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
