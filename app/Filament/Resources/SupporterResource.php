@@ -2,28 +2,30 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\Gender;
-use App\Enums\Religion;
 use App\Enums\Role;
-use App\Filament\Resources\SupporterResource\Pages;
-use App\Models\Supporter;
 use App\Models\User;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
+use App\Enums\Gender;
+use App\Models\Timses;
+use App\Enums\Religion;
+use Filament\Forms\Get;
 use Filament\Forms\Form;
+use App\Models\Supporter;
+use Filament\Tables\Table;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Table;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteBulkAction;
+use App\Filament\Resources\SupporterResource\Pages;
 
 class SupporterResource extends Resource
 {
@@ -42,27 +44,40 @@ class SupporterResource extends Resource
                 Section::make()
                     ->schema([
                         Select::make('timses_id')
-                            ->options(
-                                User::where('role', Role::Timses)
-                                    ->has('timses')
-                                    ->pluck('name', 'id')
-                            )
+                            ->label('Timses')
+                            ->options(function (string $operation, Get $get) {
+                                return $operation == 'edit' ?
+                                    [
+                                        $get('timses_id') => Timses::find($get('timses_id'))->user->name
+                                    ] :
+                                    User::where('role', Role::Timses)
+                                        ->has('timses')
+                                        ->pluck('name', 'id');
+                            
+                            })
                             ->native(false)
+                            ->disabled(fn (string $operation) => $operation == 'edit')
                             ->searchable()
                             ->required()
                             ->hidden(request()->user()->isTimses()),
-                    ])->columns(),
+                    ])
+                    ->columns()
+                    ->hiddenOn('view'),
+
                 Section::make()
                     ->schema([
                         TextInput::make('nik')
                             ->required()
                             ->numeric(),
                         TextInput::make('name')
+                            ->label('Nama')
                             ->required(),
                         Select::make('gender')
+                            ->label('Jenis Kelamin')
                             ->options(Gender::class)
                             ->required(),
                         Select::make('religion')
+                            ->label('Agama')
                             ->options(Religion::class)
                             ->required(),
                     ])->columns(),
@@ -70,15 +85,19 @@ class SupporterResource extends Resource
                 Section::make()
                     ->schema([
                         TextInput::make('rt')
+                            ->label('RT')
                             ->required(),
                         TextInput::make('village')
+                            ->label('Desa')
                             ->required(),
                         TextInput::make('district')
+                            ->label('Distrik')
                             ->required(),
                     ])->columns(),
                 Section::make()
                     ->schema([
                         FileUpload::make('image')
+                            ->label('Foto KTP')
                             ->image()
                             ->directory('supporter-images')
                             ->imageEditor()
@@ -98,12 +117,16 @@ class SupporterResource extends Resource
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('name')
+                    ->label('Nama')
                     ->searchable(),
                 TextColumn::make('gender')
+                    ->label('Jenis Kelamin')
                     ->searchable(),
                 TextColumn::make('religion')
+                    ->label('Agama')
                     ->searchable(),
-                ImageColumn::make('image'),
+                ImageColumn::make('image')
+                    ->label('Foto KTP'),
             ])
             ->filters([
                 //
