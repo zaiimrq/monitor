@@ -17,6 +17,7 @@ use Filament\Forms\Components\Section;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Support\Facades\Storage;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Columns\ImageColumn;
@@ -126,6 +127,7 @@ class SupporterResource extends Resource
                     ->label('Agama')
                     ->searchable(),
                 ImageColumn::make('image')
+                    ->url(fn ($record) => Storage::url($record->image), true)
                     ->label('Foto KTP'),
             ])
             ->filters([

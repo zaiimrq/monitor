@@ -29,7 +29,7 @@ class IssuePolicy
      */
     public function create(User $user): bool
     {
-        return $user->isTimses();
+        return $user->isTimses() && $user->isTimsesReady();
     }
 
     /**
