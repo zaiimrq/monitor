@@ -16,11 +16,13 @@ class BTargetSupporter extends ChartWidget
 
         self::$heading = "Total dukungan $supporter/$target";
 
+        dd($target - $supporter >= 0 ?: 0);
+
         return [
             'datasets' => [
                 [
                     'label' => 'Dukungan Chart',
-                    'data' => [$target - $supporter >= 0 ?: 0, $supporter],
+                    'data' => [, $supporter],
                     'backgroundColor' => [
                         'rgb(255, 99, 132)',
                         'rgb(54, 162, 235)',
