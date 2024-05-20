@@ -20,6 +20,7 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
+    protected static ?string $navigationGroup = 'Administrator';
 
     public static function form(Form $form): Form
     {
@@ -28,19 +29,21 @@ class UserResource extends Resource
             ->schema([
                 Forms\Components\Section::make()
                 ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->required(),
-                        Forms\Components\TextInput::make('email')
-                            ->email()
-                            ->required(),
-                        Forms\Components\Select::make('role')
-                            ->native(false)
-                            ->options(Role::class)
-                            ->required(),
-                        Forms\Components\TextInput::make('password')
-                            ->hidden(fn (string $operation, Get $get) => $operation == 'edit' && !$get('change_password'))
-                            ->password()
-                            ->required(),
+                    Forms\Components\TextInput::make('name')
+                        ->required(),
+                    Forms\Components\TextInput::make('email')
+                        ->email()
+                        ->required(),
+                    
+                    Forms\Components\Select::make('role')
+                        ->native(false)
+                        ->options(Role::class)
+                        ->required(),
+
+                    Forms\Components\TextInput::make('password')
+                        ->hidden(fn (string $operation, Get $get) => $operation == 'edit' && !$get('change_password'))
+                        ->password()
+                        ->required(),
                 ])->columns(),
                 Forms\Components\Checkbox::make('change_password')
                             ->hiddenOn('create')

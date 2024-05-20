@@ -5,10 +5,10 @@ use Filament\Support\Contracts\HasLabel;
 
 enum Religion: string implements HasLabel
 {
-    case Islam = 'islam';
-    case Kristen = 'kristen';
-    case Hindu = 'hindu';
-    case Budha = 'budha';
+    case Islam = 'Islam';
+    case Kristen = 'Kristen';
+    case Hindu = 'Hindu';
+    case Budha = 'Budha';
 
     public function getLabel(): string|null
     {

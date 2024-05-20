@@ -12,7 +12,20 @@ use Filament\Forms\Form;
 use App\Models\Supporter;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Resources\Pages\Page;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteBulkAction;
 use App\Filament\Resources\SupporterResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\SupporterResource\RelationManagers;
@@ -21,37 +34,60 @@ class SupporterResource extends Resource
 {
     protected static ?string $model = Supporter::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+
+    protected static ?string $modelLabel = 'pendukung';
+    protected static ?string $pluralModelLabel = 'pendukung';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('timses_id')
-                    ->options(
-                        User::where('role', Role::Timses)
-                            ->has('timses')
-                            ->pluck('name', 'id')
-                    )
-                    ->required()
-                    ->hidden(request()->user()->isTimses()),
-                Forms\Components\TextInput::make('nik')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('name')
-                    ->required(),
-                Forms\Components\Select::make('gender')
-                    ->options(Gender::class)
-                    ->required(),
-                Forms\Components\Select::make('religion')
-                    ->options(Religion::class)
-                    ->required(),
-                Forms\Components\TextInput::make('rt')
-                    ->required(),
-                Forms\Components\TextInput::make('village')
-                    ->required(),
-                Forms\Components\TextInput::make('district')
-                    ->required(),
+                Section::make()
+                    ->schema([
+                        Select::make('timses_id')
+                            ->options(
+                                User::where('role', Role::Timses)
+                                    ->has('timses')
+                                    ->pluck('name', 'id')
+                            )
+                            ->native(false)
+                            ->searchable()
+                            ->required()
+                            ->hidden(request()->user()->isTimses()),
+                    ])->columns(),
+                Section::make()
+                    ->schema([
+                        TextInput::make('nik')
+                            ->required()
+                            ->numeric(),
+                        TextInput::make('name')
+                            ->required(),
+                        Select::make('gender')
+                            ->options(Gender::class)
+                            ->required(),
+                        Select::make('religion')
+                            ->options(Religion::class)
+                            ->required(),
+                    ])->columns(),
+
+                Section::make()
+                    ->schema([
+                        TextInput::make('rt')
+                            ->required(),
+                        TextInput::make('village')
+                            ->required(),
+                        TextInput::make('district')
+                            ->required(),
+                    ])->columns(),
+                Section::make()
+                    ->schema([
+                        FileUpload::make('image')
+                        ->image()
+                        ->directory('supporter-images')
+                        ->imageEditor()
+                        ->required()
+                    ])
             ]);
     }
 
@@ -59,30 +95,33 @@ class SupporterResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('timses.user.name')
+                TextColumn::make('timses.user.name')
                     ->hidden(request()->user()->isTimses())
                     ->sortable(),
-                Tables\Columns\TextColumn::make('nik')
+                TextColumn::make('nik')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('gender')
+                TextColumn::make('gender')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('religion')
+                TextColumn::make('religion')
                     ->searchable(),
+                ImageColumn::make('image')
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                ActionGroup::make([
+                    ViewAction::make(),
+                    EditAction::make(),
+                    DeleteAction::make(),
+                ])
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -112,6 +151,5 @@ class SupporterResource extends Resource
                 :
                 parent::getEloquentQuery()->where('timses_id', request()->user()->timses?->id);
     }
-
     
 }

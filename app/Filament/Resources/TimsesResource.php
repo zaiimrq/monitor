@@ -10,27 +10,32 @@ use App\Models\Timses;
 use Filament\Forms\Get;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\TimsesResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\TimsesResource\RelationManagers;
 use App\Filament\Resources\TimsesResource\RelationManagers\UserRelationManager;
-use Filament\Infolists\Infolist;
 
 class TimsesResource extends Resource
 {
     protected static ?string $model = Timses::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationGroup = 'Administrator';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                \Filament\Forms\Components\Section::make()
+                Section::make()
                     ->schema([
-                        Forms\Components\Select::make('user_id')
+                        Select::make('user_id')
                             ->label('Timses')
                             ->options(
                                 User::where('role', Role::Timses)
@@ -40,13 +45,14 @@ class TimsesResource extends Resource
                             ->hiddenOn('edit')
                             ->searchable()
                             ->required(),
-                        Forms\Components\TextInput::make('budget')
+                        TextInput::make('budget')
                             ->prefix('Rp. ')
                             ->numeric(),
-                        Forms\Components\TextInput::make('target')
+                        TextInput::make('target')
                             ->required()
                             ->numeric(),
-                    ])->columns()
+                    ])
+                    ->columns()
             ]);
     }
 
@@ -54,14 +60,14 @@ class TimsesResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')
+                TextColumn::make('user.name')
                     ->label('Timses')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('target')
+                TextColumn::make('target')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('budget')
+                TextColumn::make('budget')
                     ->money(currency: 'IDR', locale: 'id')
                     ->label('Anggaran')
                     ->sortable(),
