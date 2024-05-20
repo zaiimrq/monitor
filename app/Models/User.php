@@ -14,12 +14,10 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    protected $guarded = ['id'];
     protected $hidden = [
         'password',
         'remember_token',
-    ];
-    protected $with = [
-        'timses'
     ];
 
 

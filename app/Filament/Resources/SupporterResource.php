@@ -6,6 +6,8 @@ use App\Enums\Role;
 use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
+use App\Enums\Gender;
+use App\Enums\Religion;
 use Filament\Forms\Form;
 use App\Models\Supporter;
 use Filament\Tables\Table;
@@ -38,9 +40,11 @@ class SupporterResource extends Resource
                     ->numeric(),
                 Forms\Components\TextInput::make('name')
                     ->required(),
-                Forms\Components\TextInput::make('gender')
+                Forms\Components\Select::make('gender')
+                    ->options(Gender::class)
                     ->required(),
-                Forms\Components\TextInput::make('religion')
+                Forms\Components\Select::make('religion')
+                    ->options(Religion::class)
                     ->required(),
                 Forms\Components\TextInput::make('rt')
                     ->required(),
@@ -56,6 +60,7 @@ class SupporterResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('timses.user.name')
+                    ->hidden(request()->user()->isTimses())
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nik')
                     ->numeric()
@@ -66,12 +71,6 @@ class SupporterResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('religion')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('rt')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('village')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('district')
-                    ->searchable(),
             ])
             ->filters([
                 //
@@ -79,6 +78,7 @@ class SupporterResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -103,4 +103,15 @@ class SupporterResource extends Resource
             'edit' => Pages\EditSupporter::route('/{record}/edit'),
         ];
     }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return request()->user()->isAdmin()
+                ? 
+                parent::getEloquentQuery()
+                :
+                parent::getEloquentQuery()->where('timses_id', request()->user()->timses?->id);
+    }
+
+    
 }

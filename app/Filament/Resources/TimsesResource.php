@@ -33,7 +33,9 @@ class TimsesResource extends Resource
                         Forms\Components\Select::make('user_id')
                             ->label('Timses')
                             ->options(
-                                User::where('role', Role::Timses)->doesntHave('timses')->pluck('name', 'id')
+                                User::where('role', Role::Timses)
+                                    ->doesntHave('timses')
+                                    ->pluck('name', 'id')
                             )
                             ->hiddenOn('edit')
                             ->searchable()
