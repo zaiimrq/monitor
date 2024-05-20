@@ -43,7 +43,7 @@ class UserResource extends Resource
                             ->required(),
                 ])->columns(),
                 Forms\Components\Checkbox::make('change_password')
-                            ->hidden(fn (string $operation, Get $get) => $operation == 'create')
+                            ->hiddenOn('create')
                             ->live(),
 
             ]);

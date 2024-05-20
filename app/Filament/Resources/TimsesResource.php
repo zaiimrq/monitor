@@ -35,10 +35,11 @@ class TimsesResource extends Resource
                             ->options(
                                 User::where('role', Role::Timses)->doesntHave('timses')->pluck('name', 'id')
                             )
-                            ->hidden(fn (string $operation): bool => $operation == 'edit')
+                            ->hiddenOn('edit')
                             ->searchable()
                             ->required(),
                         Forms\Components\TextInput::make('budget')
+                            ->prefix('Rp. ')
                             ->numeric(),
                         Forms\Components\TextInput::make('target')
                             ->required()
@@ -68,6 +69,7 @@ class TimsesResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
