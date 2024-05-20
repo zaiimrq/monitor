@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Report;
+use App\Models\Issue;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
@@ -19,7 +19,7 @@ class ReportPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Report $report): bool
+    public function view(User $user, Issue $report): bool
     {
         return true;
     }
@@ -35,7 +35,7 @@ class ReportPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Report $report): bool
+    public function update(User $user, Issue $report): bool
     {
         return $user->isTimses();
     }
@@ -43,7 +43,7 @@ class ReportPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Report $report): bool
+    public function delete(User $user, Issue $report): bool
     {
         return $user->isAdminOrTimses();
     }
@@ -51,7 +51,7 @@ class ReportPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Report $report): bool
+    public function restore(User $user, Issue $report): bool
     {
         return $user->isAdminOrTimses();
     }
@@ -59,7 +59,7 @@ class ReportPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Report $report): bool
+    public function forceDelete(User $user, Issue $report): bool
     {
         return $user->isAdmin();
     }

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Report extends Model
+class Issue extends Model
 {
     use HasFactory;
 
@@ -22,7 +22,7 @@ class Report extends Model
 
     protected static function booted() 
     {
-        self::deleted(function (Report $report) {
+        self::deleted(function (Issue $report) {
             Storage::disk('public')->delete($report?->images ?? false);
         });
     }

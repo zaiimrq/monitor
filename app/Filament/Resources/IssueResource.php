@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ReportResource\Pages;
 use App\Filament\Resources\ReportResource\RelationManagers;
-use App\Models\Report;
+use App\Models\Issue;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
@@ -16,9 +16,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ReportResource extends Resource
+class IssueResource extends Resource
 {
-    protected static ?string $model = Report::class;
+    protected static ?string $model = Issue::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -81,10 +81,10 @@ class ReportResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListReports::route('/'),
-            'create' => Pages\CreateReport::route('/create'),
-            'view' => Pages\ViewReport::route('/{record}'),
-            'edit' => Pages\EditReport::route('/{record}/edit'),
+            'index' => Pages\ListIssues::route('/'),
+            'create' => Pages\CreateIssue::route('/create'),
+            'view' => Pages\ViewIssue::route('/{record}'),
+            'edit' => Pages\EditIssue::route('/{record}/edit'),
         ];
     }
 
