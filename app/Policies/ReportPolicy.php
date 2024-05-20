@@ -2,26 +2,26 @@
 
 namespace App\Policies;
 
-use App\Models\Timses;
+use App\Models\Report;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class TimsesPolicy
+class ReportPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->isAdmin();
+        return true;
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Timses $timses): bool
+    public function view(User $user, Report $report): bool
     {
-        return $user->isAdmin();
+        return true;
     }
 
     /**
@@ -29,37 +29,37 @@ class TimsesPolicy
      */
     public function create(User $user): bool
     {
-        return $user->isAdmin() && $user->canAddNewRecord();
+        return $user->isTimses() && ! is_null($user->timses);
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Timses $timses): bool
+    public function update(User $user, Report $report): bool
     {
-        return $user->isAdmin();
+        return $user->isTimses();
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Timses $timses): bool
+    public function delete(User $user, Report $report): bool
     {
-        return $user->isAdmin();
+        return $user->isAdminOrTimses();
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Timses $timses): bool
+    public function restore(User $user, Report $report): bool
     {
-        return $user->isAdmin();
+        return $user->isAdminOrTimses();
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Timses $timses): bool
+    public function forceDelete(User $user, Report $report): bool
     {
         return $user->isAdmin();
     }

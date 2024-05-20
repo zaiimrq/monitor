@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\Role;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -46,15 +47,15 @@ class User extends Authenticatable
         return $this->isAdmin() || $this->isTimses();
     }
 
-    public function canAddNewTimses(): bool 
+    public function canAddNewRecord(): bool 
     {
         return User::where('role', Role::Timses)->pluck('id')
             ->diff(Timses::pluck('id'))
             ->isNotEmpty();
     }
 
-    public function timses(): HasMany
+    public function timses(): HasOne
     {
-        return $this->hasMany(Timses::class);
+        return $this->hasOne(Timses::class);
     }
 }

@@ -21,4 +21,11 @@ class EditUser extends EditRecord
     {
         return $this->getResource()::getUrl('index');
     }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        unset($data['change_password']);
+
+        return $data;
+    }
 }
