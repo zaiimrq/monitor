@@ -3,9 +3,9 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Supporter;
+use Filament\Widgets\ChartWidget;
 use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
-use Filament\Widgets\ChartWidget;
 
 class CSupporterTrafficChart extends ChartWidget
 {
@@ -20,7 +20,7 @@ class CSupporterTrafficChart extends ChartWidget
             )
             ->perDay()
             ->count();
-    
+
         return [
             'datasets' => [
                 [

@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\ReportResource\Pages;
 
 use App\Filament\Resources\IssueResource;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateIssue extends CreateRecord
@@ -13,6 +12,7 @@ class CreateIssue extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['timses_id'] = request()->user()->timses->id;
+
         return $data;
     }
 

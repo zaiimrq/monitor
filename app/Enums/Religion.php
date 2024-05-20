@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Enums;
+
 use Filament\Support\Contracts\HasLabel;
 
 enum Religion: string implements HasLabel
@@ -10,7 +11,7 @@ enum Religion: string implements HasLabel
     case Hindu = 'Hindu';
     case Budha = 'Budha';
 
-    public function getLabel(): string|null
+    public function getLabel(): ?string
     {
         return match ($this) {
             Religion::Islam => 'Islam',

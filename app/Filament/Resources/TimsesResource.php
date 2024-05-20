@@ -3,30 +3,24 @@
 namespace App\Filament\Resources;
 
 use App\Enums\Role;
-use Filament\Forms;
-use App\Models\User;
-use Filament\Tables;
-use App\Models\Timses;
-use Filament\Forms\Get;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Infolists\Infolist;
-use Filament\Resources\Resource;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Section;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Forms\Components\TextInput;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\TimsesResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\TimsesResource\RelationManagers;
-use App\Filament\Resources\TimsesResource\RelationManagers\UserRelationManager;
+use App\Models\Timses;
+use App\Models\User;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 
 class TimsesResource extends Resource
 {
     protected static ?string $model = Timses::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
+
     protected static ?string $navigationGroup = 'Administrator';
 
     public static function form(Form $form): Form
@@ -52,7 +46,7 @@ class TimsesResource extends Resource
                             ->required()
                             ->numeric(),
                     ])
-                    ->columns()
+                    ->columns(),
             ]);
     }
 
@@ -85,7 +79,6 @@ class TimsesResource extends Resource
                 ]),
             ]);
     }
-
 
     public static function getPages(): array
     {

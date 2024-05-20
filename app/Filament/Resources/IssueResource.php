@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ReportResource\Pages;
-use App\Filament\Resources\ReportResource\RelationManagers;
 use App\Models\Issue;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
@@ -14,13 +13,15 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class IssueResource extends Resource
 {
     protected static ?string $model = Issue::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-exclamation-triangle';
+
     protected static ?string $modelLabel = 'kendala';
+
     protected static ?string $pluralModelLabel = 'kendala';
 
     public static function form(Form $form): Form
@@ -42,11 +43,11 @@ class IssueResource extends Resource
                         ->directory('report-images')
                         ->imageEditor(),
                 ])->hiddenOn('view'),
-                
+
                 Section::make('Images')->schema([
                     ViewField::make('images')
-                        ->view('filament.forms.components.report-images')
-                ])->visibleOn('view')
+                        ->view('filament.forms.components.report-images'),
+                ])->visibleOn('view'),
             ]);
     }
 
@@ -65,7 +66,7 @@ class IssueResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
-                    ->sortable()
+                    ->sortable(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -92,7 +93,7 @@ class IssueResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return request()->user()->isAdmin()
-                ? 
+                ?
                 parent::getEloquentQuery()
                 :
                 parent::getEloquentQuery()->where('timses_id', request()->user()->timses?->id);
