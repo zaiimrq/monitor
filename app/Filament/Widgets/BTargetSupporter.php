@@ -22,7 +22,7 @@ class BTargetSupporter extends ChartWidget
             'datasets' => [
                 [
                     'label' => 'Dukungan Chart',
-                    'data' => [, $supporter],
+                    'data' => [$target, $supporter],
                     'backgroundColor' => [
                         'rgb(255, 99, 132)',
                         'rgb(54, 162, 235)',
