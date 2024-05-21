@@ -12,7 +12,7 @@ class BTargetSupporter extends ChartWidget
     protected function getData(): array
     {
         $supporter = DB::table('supporters')->count();
-        $target = DB::table('timses')->sum('target') - $supporter;
+        $target = DB::table('timses')->sum('target');
 
         self::$heading = "Total dukungan $supporter/$target";
 
@@ -20,10 +20,10 @@ class BTargetSupporter extends ChartWidget
             'datasets' => [
                 [
                     'label' => 'Dukungan Chart',
-                    'data' => [$target >= 0 ?$target:0, $supporter],
+                    'data' => [$supporter, max($target - $supporter, 0)],
                     'backgroundColor' => [
-                        'rgb(255, 99, 132)',
                         'rgb(54, 162, 235)',
+                        'rgb(255, 99, 132)',
                     ],
                 ],
             ],

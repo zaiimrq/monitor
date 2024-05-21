@@ -34,7 +34,7 @@ class SupporterResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
-    protected static ?string $modelLabel = 'pendukung';
+    protected static ?string $label = 'Pendukung';
 
     protected static ?string $pluralModelLabel = 'pendukung';
 
@@ -112,10 +112,10 @@ class SupporterResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('timses.user.name')
+                    ->label('Timses')
                     ->hidden(request()->user()->isTimses())
                     ->sortable(),
                 TextColumn::make('nik')
-                    ->numeric()
                     ->sortable(),
                 TextColumn::make('name')
                     ->label('Nama')
