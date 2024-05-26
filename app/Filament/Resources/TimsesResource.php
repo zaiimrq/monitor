@@ -32,7 +32,7 @@ class TimsesResource extends Resource
                         Select::make('user_id')
                             ->label('Timses')
                             ->options(
-                                User::where('role', Role::Timses)
+                                User::whereRole(Role::Timses)
                                     ->doesntHave('timses')
                                     ->pluck('name', 'id')
                             )

@@ -168,6 +168,6 @@ class SupporterResource extends Resource
                 ?
                 parent::getEloquentQuery()
                 :
-                parent::getEloquentQuery()->where('timses_id', request()->user()->timses?->id);
+                parent::getEloquentQuery()->whereTimsesId(request()->user()->timses?->id);
     }
 }
