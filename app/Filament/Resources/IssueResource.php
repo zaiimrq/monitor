@@ -2,17 +2,22 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ReportResource\Pages;
-use App\Models\Issue;
 use Filament\Forms;
-use Filament\Forms\Components\FileUpload;
+use Filament\Tables;
+use App\Models\Issue;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use OpenSpout\Common\Entity\Row;
+use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\ViewField;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Table;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Enums\ActionsPosition;
+use App\Filament\Resources\ReportResource\Pages;
+use Filament\Tables\Actions\HeaderActionsPosition;
 
 class IssueResource extends Resource
 {
@@ -94,6 +99,6 @@ class IssueResource extends Resource
                 ?
                 parent::getEloquentQuery()
                 :
-                parent::getEloquentQuery()->where('timses_id', request()->user()->timses?->id);
+                parent::getEloquentQuery()->whereTimsesId(request()->user()->timses?->id);
     }
 }

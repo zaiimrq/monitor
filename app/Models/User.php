@@ -14,11 +14,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements FilamentUser
 {
+
+    use HasFactory, Notifiable;
     public function canAccessPanel(\Filament\Panel $panel): bool
     {
         return true;
     }
-    use HasFactory, Notifiable;
 
     protected $guarded = ['id'];
 
@@ -26,6 +27,7 @@ class User extends Authenticatable implements FilamentUser
         'password',
         'remember_token',
     ];
+    protected $with = ['timses'];
 
     protected function casts(): array
     {
@@ -53,7 +55,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAddNewTimses(): bool
     {
-        return User::where('role', Role::Timses)->pluck('id')
+        return User::whereRole(Role::Timses)->pluck('id')
             ->diff(Timses::pluck('user_id'))
             ->isNotEmpty();
     }

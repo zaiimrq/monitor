@@ -17,6 +17,8 @@ class Issue extends Model
         'images' => 'array',
     ];
 
+    protected $with = ['timses'];
+
     public function timses(): BelongsTo
     {
         return $this->belongsTo(Timses::class);

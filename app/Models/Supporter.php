@@ -13,6 +13,8 @@ class Supporter extends Model
 
     protected $guarded = ['id'];
 
+    protected $with = ['timses'];
+
     public function timses(): BelongsTo
     {
         return $this->belongsTo(Timses::class);
