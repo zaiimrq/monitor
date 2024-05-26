@@ -18,7 +18,7 @@ Selamat datang di Aplikasi Monitoring Pemilihan Umum! Aplikasi ini dirancang unt
 
 ## Tangkapan Layar
 
-![Preview](images/preview.png)
+![Preview](docs/images/preview.png)
 _Preview grafik pembaruan pemilihan real-time._
 
 ## Instalasi
